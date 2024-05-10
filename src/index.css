@@ -1,0 +1,40 @@
+body{
+    background-color: #E3E8EE;
+}
+
+.menuBox {
+    width: 315px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    border-radius: .75rem;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+  }
+
+  .menuGroupBox {
+    width: 345px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-radius: .75rem;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    flex-direction: column;
+  }
+  
+  .blueBox {
+    background-color: white;
+    color: #01BAF2;
+    border: 1px solid #01BAF2;
+
+  }
+  
+  .whiteBox {
+    background-color: white;
+    color: blue;
+  }
+  
