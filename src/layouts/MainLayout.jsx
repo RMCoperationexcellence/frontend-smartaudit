@@ -19,7 +19,7 @@ const MainLayout = ({ children }) => {
 
   return (
     <div>
-      <AppBar position="static" sx={{ justifyContent: "space-between" }}>
+            <AppBar position="static" sx={{backgroundColor: '#00BBF2'}}>
         <Toolbar>
         <IconButton color="inherit" edge="start" onClick={handleBack} sx={{ mr: 2 }}>
                         <ArrowBackIcon />
