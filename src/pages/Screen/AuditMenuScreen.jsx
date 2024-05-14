@@ -6,7 +6,7 @@ function AuditMenu() {
   const navigate = useNavigate();
   return (
     <MainLayout>
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", marginTop: "50px" }}>
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", marginTop: "50px" }}>
       <div className="menuBox blueBox" onClick={() => navigate('/factoryactual')}>
         <Typography variant='h6'>ผลปฏิบัติงานในโรงงาน</Typography>
       </div>

@@ -32,7 +32,7 @@ export default function Router({ isAuthenticated }) {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<ProtectedRoute isAuthenticated={isAuthenticated}><SelectPlantScreen /></ProtectedRoute>} />
-                <Route path="/login" element={isAuthenticated ? <Navigate to="/" replace /> : <ProtectedRoute isAuthenticated={isAuthenticated}><LoginScreen /></ProtectedRoute>} />
+                <Route path="/login" element={<LoginScreen />} />
                 <Route path="/selectPlant" element={<ProtectedRoute isAuthenticated={isAuthenticated}><SelectPlantScreen /></ProtectedRoute>} />
                 <Route path="/menu" element={<ProtectedRoute isAuthenticated={isAuthenticated} isPlantRequired><AuditMenu /></ProtectedRoute>} />
                 <Route path="/factoryactual" element={<ProtectedRoute isAuthenticated={isAuthenticated} isPlantRequired><FactoryResultScreen /></ProtectedRoute>} />

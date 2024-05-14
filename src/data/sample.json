@@ -9,7 +9,7 @@
       { "no": 2, "score": 2, "description": "ผ่านไม่ครบทุกคน" },
       { "no": 3, "score": 1, "description": "อบรมแต่ยังสอบไม่ผ่านทุกคน" },
       { "no": 4, "score": 0, "description": "ไม่ดำเนินการ" },
-      { "no": 5, "score": 3, "description": "รอถึงกำหนดการ" }
+      { "no": 5, "score": "", "description": "รอถึงกำหนดการ" }
     ]
   },
   {
@@ -22,7 +22,7 @@
       { "no": 2, "score": 2, "description": "ผ่านไม่ครบทุกคน" },
       { "no": 3, "score": 1, "description": "อบรมแต่ยังสอบไม่ผ่านทุกคน" },
       { "no": 4, "score": 0, "description": "ไม่ดำเนินการ" },
-      { "no": 5, "score": 3, "description": "รอถึงกำหนดการ" }
+      { "no": 5, "score": "", "description": "รอถึงกำหนดการ" }
     ]
   },
   {
@@ -35,7 +35,7 @@
       { "no": 2, "score": 2, "description": "ผ่านไม่ครบทุกคน" },
       { "no": 3, "score": 1, "description": "อบรมแต่ยังสอบไม่ผ่านทุกคน" },
       { "no": 4, "score": 0, "description": "ไม่ดำเนินการ" },
-      { "no": 5, "score": 3, "description": "รอถึงกำหนดการ" }
+      { "no": 5, "score": "", "description": "รอถึงกำหนดการ" }
     ]
   },
   {
@@ -48,7 +48,7 @@
       { "no": 2, "score": 2, "description": "ผ่านไม่ครบทุกคน" },
       { "no": 3, "score": 1, "description": "อบรมแต่ยังสอบไม่ผ่านทุกคน" },
       { "no": 4, "score": 0, "description": "ไม่ดำเนินการ" },
-      { "no": 5, "score": 3, "description": "รอถึงกำหนดการ" }
+      { "no": 5, "score": "", "description": "รอถึงกำหนดการ" }
     ]
   }
 ]

@@ -9,7 +9,7 @@ const ChoiceLayout = ({ children }) => {
     const name = location.state ? location.state.name : 'Default Screen Name'; // Fallback if no name
 
     const handleBack = () => {
-        navigate(-1); // Navigate back in history stack
+        navigate('/auditform'); // Navigate back in history stack
     };
     
     return (
