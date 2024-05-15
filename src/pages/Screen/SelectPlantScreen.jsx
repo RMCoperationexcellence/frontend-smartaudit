@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Button from "@mui/material/Button";
 import { Typography } from "@mui/material";
-import { getPlant } from "../../services/Api/GetPlantService.js";
+import { getPlant } from "../../services/Api/Get/GetPlantService.js";
 
 function SelectPlantScreen() {
   const [plants, setPlants] = useState([]); // State เพื่อเก็บข้อมูลโรงงาน

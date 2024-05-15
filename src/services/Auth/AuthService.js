@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { storeUser } from '../Storage/UserService'
 
 const API_URL = import.meta.env.VITE_API_URL // เปลี่ยน URL เพื่อให้ตรงกับ API endpoint ของคุณ
 
@@ -7,7 +8,7 @@ const login = async (username, password) => {
         const response = await axios.post(`${API_URL}/login`, { username, password });
         if (response.data.success) {
             localStorage.setItem('userToken', response.data.token);  // Save the token
-            localStorage.setItem('userId', response.data.userId);    // Save the userId
+            storeUser(username);
             return response.data;
         }
     } catch (error) {

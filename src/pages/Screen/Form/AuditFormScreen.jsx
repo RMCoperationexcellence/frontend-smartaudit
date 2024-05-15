@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Typography } from "@mui/material";
 import MainLayout from "../../../layouts/MainLayout";
 import { useNavigate } from "react-router-dom";  // Import useNavigate
-import { getAuditForm, getAuditGroup } from "../../../services/Api/GetAuditForm";
+import { getAuditForm, getAuditGroup } from "../../../services/Api/Get/GetAuditForm";
 import { getPlantNo } from "../../../services/Storage/PlantService";
 import { convertToThaiTime } from "../../../util/convertTime";
 
@@ -40,7 +40,7 @@ function AuditFormScreen() {
 
   const memoizedAuditFormData = useMemo(() => {
     return auditFormGroup?.map((item, index) => (
-      <div key={index} className="menuGroupBox blueBox" onClick={() => navigate(`/auditform/${item.AUDIT_GROUP_ID}`,{ state: { name: item.NAME, GroupId: item.AUDIT_GROUP_ID } })}>
+      <div key={index} className="menuGroupBox blueBox" onClick={() => navigate(`/auditform/form`,{ state: { name: item.NAME, GroupId: item.AUDIT_GROUP_ID } })}>
         <Typography variant="h5" sx={{ marginBottom: "10px", textAlign: "center", marginTop: "20px" }}>{item.NAME}</Typography>
         <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", marginBottom: "10px", marginLeft: "10px", marginRight: "10px" }}>
           <div style={{ textAlign: "left", display: "flex", flexDirection: "column" }}>

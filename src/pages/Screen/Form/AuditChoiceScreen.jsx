@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import ChoiceLayout from '../../../layouts/ChoiceLayout';
 import { useLocation } from 'react-router-dom';
 import FormTable from '../../../components/FormTable';
-import { getAuditQuestion } from '../../../services/Api/GetAuditForm';
+import { getAuditQuestion } from '../../../services/Api/Get/GetAuditForm';
 import FormProgress from '../../../components/FormProgress';
 
 function AuditChoiceScreen() {
