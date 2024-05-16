@@ -13,8 +13,8 @@ const ChoiceLayout = ({ children }) => {
     };
     
     return (
-        <div>
-            <AppBar position="static" sx={{backgroundColor: '#00BBF2'}}>
+        <div style={{ paddingTop: '56px' }}> {/* Adjust this padding to match the height of your AppBar */}
+            <AppBar position="fixed" sx={{ top: 0, backgroundColor: '#00BBF2', zIndex: 1000 }}>
                 <Toolbar>
                     <IconButton color="inherit" edge="start" onClick={handleBack} sx={{ mr: 2 }}>
                         <ArrowBackIcon />
@@ -24,7 +24,9 @@ const ChoiceLayout = ({ children }) => {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            {children}
+            <div style={{ marginTop: '56px' }}> {/* Adjust this margin to match the height of your AppBar */}
+                {children}
+            </div>
         </div>
     );
 };

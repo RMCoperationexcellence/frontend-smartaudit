@@ -1,45 +1,67 @@
-import { useState, useEffect } from 'react';
-import ChoiceLayout from '../../../layouts/ChoiceLayout';
-import { useLocation } from 'react-router-dom';
-import FormTable from '../../../components/FormTable';
-import { getAuditQuestion } from '../../../services/Api/Get/GetAuditForm';
-import FormProgress from '../../../components/FormProgress';
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
+import ChoiceLayout from "../../../layouts/ChoiceLayout";
+import FormTable from "../../../components/FormTable";
+import { getAuditQuestion, getAuditQuestionResult } from "../../../services/Api/Get/GetAuditForm";
+import { getUser } from "../../../services/Storage/UserService";
+import { getPlantNo } from "../../../services/Storage/PlantService";
 
 function AuditChoiceScreen() {
-    const location = useLocation();
-    const { name } = location.state;
-    const { GroupId } = location.state;
-    const [auditData, setAuditData] = useState([]);
-    const [loading, setLoading] = useState(true);
+  const { state: { GroupId } } = useLocation();
+  const [auditData, setAuditData] = useState([]);
+  const [resultData, setResultData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const plantNo = getPlantNo();
 
-    console.log(GroupId)
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [auditQuestions, auditResults] = await Promise.all([
+          getAuditQuestion(GroupId),
+          getAuditQuestionResult(GroupId, plantNo),
+        ]);
+        setAuditData(auditQuestions);
+        setResultData(auditResults);
+        console.log("from Questions", auditQuestions);
+        console.log("from Results", auditResults);
+      } catch (error) {
+        console.error("Error fetching audit data:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
 
+    fetchData();
+  }, [GroupId, plantNo]);
 
-    useEffect(() => {
-      // Fetch data from API
-      const fetchData = async () => {
-          try {
-              const data = await getAuditQuestion(GroupId);
-              setAuditData(data);
-              setLoading(false);
-          } catch (error) {
-              console.error('Error fetching audit data:', error);
-              setLoading(false);
-          }
-      };
-
-      fetchData();
-  }, []);
-
+  const centerStyle = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+  const loadingContainerStyle = { ...centerStyle};
+  const contentContainerStyle = { ...centerStyle, flexDirection: "column", marginTop: "30px" };
 
   return (
     <ChoiceLayout>
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", marginTop: "30px" }}>
-                <FormProgress/>
-                <FormTable data={auditData}/>
+      {loading ? (
+        <div style={loadingContainerStyle}>
+          <CircularProgress />
         </div>
+      ) : (
+        <div style={contentContainerStyle}>
+          <FormTable
+            question={auditData}
+            result={resultData}
+            auditGroupId={GroupId}
+            plantNo={plantNo}
+            userId={getUser()}
+          />
+        </div>
+      )}
     </ChoiceLayout>
-  )
+  );
 }
 
-export default AuditChoiceScreen
+export default AuditChoiceScreen;

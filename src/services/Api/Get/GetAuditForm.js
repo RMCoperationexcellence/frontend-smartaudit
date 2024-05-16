@@ -23,6 +23,26 @@ const getAuditQuestion = async (audit_group_no ) =>{
     }
 }
 
+const getAuditQuestionResult = async (audit_group_no, plant_no ) =>{
+    try{
+        const response = await axios.get(`${API_URL}/auditForm/auditQuestionResult?audit_group_id=${audit_group_no}&plant_no=${plant_no}`);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch plant list:', error);
+        throw error;
+    }
+}
+
+const getAuditFormResult = async (plant_no ) =>{
+    try{
+        const response = await axios.get(`${API_URL}/auditForm/auditQuestionResult?plant_no=${plant_no}`);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch plant list:', error);
+        throw error;
+    }
+}
+
 const getAuditForm = async ( plant_no ) => {
     try {
         const response = await axios.get(`${API_URL}/auditform/auditgroupresult?plant_no=${plant_no}`);
@@ -33,4 +53,4 @@ const getAuditForm = async ( plant_no ) => {
     }
 };
 
-export {getAuditGroup, getAuditForm, getAuditQuestion };
+export {getAuditGroup, getAuditForm, getAuditQuestion, getAuditQuestionResult, getAuditFormResult };

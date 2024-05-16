@@ -2,4 +2,8 @@ const storeUser = (user) => {
     localStorage.setItem('user',user);
 }
 
-export { storeUser }
+const getUser = () => {
+    return localStorage.getItem('user');
+}
+
+export { storeUser, getUser }

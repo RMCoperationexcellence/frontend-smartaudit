@@ -3,31 +3,18 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { Suspense, lazy } from "react";
 import { isPlantChecked } from "./services/Storage/PlantService";
+import LinearProgress from '@mui/material/LinearProgress';
 
 const LoginScreen = lazy(() => import("./pages/Screen/LoginScreen"));
-const SelectPlantScreen = lazy(() =>
-  import("./pages/Screen/SelectPlantScreen")
-);
+const SelectPlantScreen = lazy(() => import("./pages/Screen/SelectPlantScreen"));
 const NotfoundScreen = lazy(() => import("./pages/Screen/NotfoundScreen"));
 const AuditMenu = lazy(() => import("./pages/Screen/AuditMenuScreen"));
-const FactoryResultScreen = lazy(() =>
-  import("./pages/Screen/Results/FactoryResultScreen")
-);
-const AuditResultScreen = lazy(() =>
-  import("./pages/Screen/Results/AuditResultScreen")
-);
-const AuditFormScreen = lazy(() =>
-  import("./pages/Screen/Form/AuditFormScreen")
-);
-const AuditChoiceScreen = lazy(() =>
-  import("./pages/Screen/Form/AuditChoiceScreen")
-);
+const FactoryResultScreen = lazy(() => import("./pages/Screen/Results/FactoryResultScreen"));
+const AuditResultScreen = lazy(() => import("./pages/Screen/Results/AuditResultScreen"));
+const AuditFormScreen = lazy(() => import("./pages/Screen/Form/AuditFormScreen"));
+const AuditChoiceScreen = lazy(() => import("./pages/Screen/Form/AuditChoiceScreen"));
 
-const ProtectedRoute = ({
-  children,
-  isAuthenticated,
-  isPlantRequired = false,
-}) => {
+const ProtectedRoute = ({ children, isAuthenticated, isPlantRequired = false }) => {
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
@@ -46,7 +33,7 @@ ProtectedRoute.propTypes = {
 export default function Router({ isAuthenticated }) {
   return (
     <BrowserRouter>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<LinearProgress />}>
         <Routes>
           <Route
             path="/"
