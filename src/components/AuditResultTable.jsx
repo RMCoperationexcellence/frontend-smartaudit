@@ -1,34 +1,39 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { subDays, format } from 'date-fns';
 
-const data = [
-    { id: 1, name: 'การพัฒนาพนักงาน', age: 28, city: 'New York' },
-    { id: 2, name: 'การผลิต', age: 22, city: 'San Francisco' },
-    { id: 3, name: 'การควบคุมคุณภาพ', age: 35, city: 'Chicago' },
-    { id: 4, name: 'การบำรุงรักษาเครื่องจักร', age: 35, city: 'Chicago' },
-    { id: 5, name: 'ความปลอดภัย', age: 35, city: 'Chicago' },
-    { id: 6, name: 'สิ่งแวดล้อม', age: 35, city: 'Chicago' },
-];
+
+const getDatesArray = (daysCount) => {
+    const dates = [];
+    const currentDate = new Date();
+    for (let i = daysCount - 1; i >= 0; i--) {
+        dates.push(format(subDays(currentDate, i), 'dd-MM-yy'));
+    }
+    return dates;
+};
 
 const columns = [
-    { id: '1', label: 'หัวข้อ' },
-    { id: '2', label: '19-05-24' },
-    { id: '3', label: '19-05-24' },
-    { id: '4', label: '19-05-24' },
-    { id: '5', label: '19-05-24' },
-    { id: '6', label: '19-05-24' },
-    { id: '7', label: '19-05-24' },
-    { id: '8', label: '19-05-24' },
+    { audit_group_id: 'name', label: 'หัวข้อ' },
+    ...getDatesArray(7).map(date => ({ id: date, label: date }))
 ];
 
-export default function AuditResultTable() {
+const data = [
+    { audit_group_id: 1, name: 'การพัฒนาพนักงาน', '15-05-24': 'A', '16-05-24': 'B', '17-05-24': 'C', '18-05-24': 'A', '19-05-24': 'B', '20-05-24': 'C', '21-05-24': 'A' },
+    { audit_group_id: 2, name: 'การผลิต', '15-05-24': 'A', '16-05-24': 'B', '17-05-24': 'C', '18-05-24': 'A', '19-05-24': 'B', '20-05-24': 'C', '21-05-24': 'A' },
+    { audit_group_id: 3, name: 'การควบคุมคุณภาพ', '15-05-24': 'A', '16-05-24': 'B', '17-05-24': 'C', '18-05-24': 'A', '19-05-24': 'B', '20-05-24': 'C', '21-05-24': 'A' },
+    { audit_group_id: 4, name: 'การบำรุงรักษาเครื่องจักร', '15-05-24': 'A', '16-05-24': 'B', '17-05-24': 'C', '18-05-24': 'A', '19-05-24': 'B', '20-05-24': 'C', '21-05-24': 'A' },
+    { audit_group_id: 5, name: 'ความปลอดภัย', '15-05-24': 'A', '16-05-24': 'B', '17-05-24': 'C', '18-05-24': 'A', '19-05-24': 'B', '20-05-24': 'C', '21-05-24': 'A' },
+    { audit_group_id: 6, name: 'สิ่งแวดล้อม', '15-05-24': 'A', '16-05-24': 'B', '17-05-24': 'C', '18-05-24': 'A', '19-05-24': 'B', '20-05-24': 'C', '21-05-24': 'A' }
+];
+
+export default function AuditResultTable(result) {
     return (
         <TableContainer component={Paper}>
-            <Table sx={{ width: '350px' }}>
+            <Table sx={{ minWidth: '650px' }}>
                 <TableHead>
                     <TableRow>
                         {columns.map((column, index) => (
                             <TableCell
-                                key={column.id}
+                                key={index}
                                 style={{
                                     minWidth: '80px',
                                     minHeight: '60px',
@@ -45,27 +50,28 @@ export default function AuditResultTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {data.map((row) => (
-                        <TableRow key={row.id}>
-                            {columns.map((column, index) => (
-                                <TableCell
-                                    key={column.id}
-                                    style={{
-                                        minWidth: '80px',
-                                        minHeight: '60px',
-                                        position: (index === 0 || index === columns.length - 1) ? 'sticky' : 'static',
-                                        left: index === 0 ? 0 : 'auto',
-                                        right: index === columns.length - 1 ? 0 : 'auto',
-                                        backgroundColor: (index === 0 || index === columns.length - 1) ? '#f0f0f0' : 'inherit',
-                                        zIndex: (index === 0 || index === columns.length - 1) ? 1 : 'auto',
-                                    }}
-                                >
-                                    {row[column.id]}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    ))}
-                </TableBody>
+    {data.map((row) => (
+        <TableRow key={row.audit_group_id}>
+            {columns.map((column, index) => (
+                <TableCell
+                    key={`${row.audit_group_id}-${column.id || index}`} 
+                    style={{
+                        minWidth: '80px',
+                        minHeight: '60px',
+                        position: (index === 0 || index === columns.length - 1) ? 'sticky' : 'static',
+                        left: index === 0 ? 0 : 'auto',
+                        right: index === columns.length - 1 ? 0 : 'auto',
+                        backgroundColor: (index === 0 || index === columns.length - 1) ? '#f0f0f0' : 'inherit',
+                        zIndex: (index === 0 || index === columns.length - 1) ? 1 : 'auto',
+                    }}
+                >
+                    {row[column.id] || row[column.audit_group_id]} 
+                </TableCell>
+            ))}
+        </TableRow>
+    ))}
+</TableBody>
+
             </Table>
         </TableContainer>
     );

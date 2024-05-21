@@ -12,4 +12,14 @@ const getPlant = async () => {
     }
 };
 
-export { getPlant };
+const getPlantAll = async () =>{
+    try{
+        const response = await axios.get(`${API_URL}/plantList/all`);
+        return response.data;
+    } catch(error){
+        console.error('Failed to fetch plant list:', error);
+        throw error;
+    }
+}
+
+export { getPlant, getPlantAll };

@@ -14,7 +14,7 @@ import { logout } from '../services/Auth/AuthService';
 import { useNavigate } from 'react-router-dom';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import DescriptionIcon from '@mui/icons-material/Description';
-import { Proptype } from 'prop-types';
+import { ZoomInMap } from '@mui/icons-material';
 
 export default function SidebarMenu({ open, toggleDrawer }) {
   const navigate = useNavigate();
@@ -63,6 +63,15 @@ export default function SidebarMenu({ open, toggleDrawer }) {
                 <ExitToApp />
               </ListItemIcon>
               <ListItemText primary={'ออกจากระบบ'}/>
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate('/map')}>
+              <ListItemIcon>
+                <ZoomInMap />
+              </ListItemIcon>
+              <ListItemText primary={'Map'}/>
             </ListItemButton>
           </ListItem>
       </List>

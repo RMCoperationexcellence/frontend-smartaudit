@@ -23,7 +23,6 @@ const MainLayout = ({ children }) => {
           <Typography variant="h6" component="div">
             Smart Audit
           </Typography>
-          <Button color="inherit"></Button>
           <Box sx={{ flexGrow: 1 }} />
         </Toolbar>
       </AppBar>

@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Suspense, lazy } from "react";
 import { isPlantChecked } from "./services/Storage/PlantService";
 import LinearProgress from '@mui/material/LinearProgress';
+import MapScreen from "./pages/Screen/summary/MapScreen";
 
 const LoginScreen = lazy(() => import("./pages/Screen/LoginScreen"));
 const SelectPlantScreen = lazy(() => import("./pages/Screen/SelectPlantScreen"));
@@ -98,6 +99,14 @@ export default function Router({ isAuthenticated }) {
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated} isPlantRequired>
                 <QuestionManagementScreen />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/map"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated} isPlantRequired>
+                <MapScreen />
               </ProtectedRoute>
             }
           />
