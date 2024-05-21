@@ -1,6 +1,13 @@
 body{
     background-color: #E3E8EE;
 }
+.centerContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 20px;
+}
 
 .menuBox {
     width: 315px;
@@ -26,13 +33,15 @@ body{
     flex-direction: column;
   }
 
-  #actualBox {
+  .actualBox {
+    width: 315px;
+    height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    overflow-y: auto;
-    background-color: white;
+    margin-bottom: 20px;
+    border-radius: .75rem;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
   }
   
   .blueBox {

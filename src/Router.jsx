@@ -13,6 +13,7 @@ const FactoryResultScreen = lazy(() => import("./pages/Screen/Results/FactoryRes
 const AuditResultScreen = lazy(() => import("./pages/Screen/Results/AuditResultScreen"));
 const AuditFormScreen = lazy(() => import("./pages/Screen/Form/AuditFormScreen"));
 const AuditChoiceScreen = lazy(() => import("./pages/Screen/Form/AuditChoiceScreen"));
+const QuestionManagementScreen = lazy(() => import("./pages/web-master/QuestionManagement"));
 
 const ProtectedRoute = ({ children, isAuthenticated, isPlantRequired = false }) => {
   if (!isAuthenticated) {
@@ -89,6 +90,14 @@ export default function Router({ isAuthenticated }) {
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated} isPlantRequired>
                 <AuditChoiceScreen />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/QuestionManagement"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated} isPlantRequired>
+                <QuestionManagementScreen />
               </ProtectedRoute>
             }
           />

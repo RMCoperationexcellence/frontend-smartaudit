@@ -90,7 +90,7 @@ function FormTable({ question, result, auditGroupId, plantNo, userId }) {
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-      <div id='acutalBox' className='menuBox' style={{position: 'fixed', top: 45, left: 0, width: '100%', zIndex: 999 , display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
+      <div className='actualBox' style={{position: 'fixed', top: 45, left: 0, width: '100%', zIndex: 999 , display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', backgroundColor: 'rgba(255, 255, 255, 1)' }}>
       <Typography variant='h6'>จำนวนข้อที่ทำ : {Object.values(selectedScores).filter(score => score !== null).length} / {question.length} </Typography>
       <Typography variant='h6'>คะแนนที่ได้ : {actualScore} / {maxScore} </Typography>
       </div>

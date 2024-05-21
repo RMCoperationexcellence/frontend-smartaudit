@@ -10,6 +10,7 @@ import { getPlant } from "../../services/Api/Get/GetPlantService.js";
 function SelectPlantScreen() {
   const [plants, setPlants] = useState([]); // State เพื่อเก็บข้อมูลโรงงาน
   const [selectedPlant, setSelectedPlant] = useState(''); // State เพื่อเก็บข้อมูลโรงงานที่ถูกเลือก
+  const [selectedPlantName, setSelectedPlantName] = useState(''); // State to store selected plant name
   const navigate = useNavigate();
 
   const fetchPlants = async () => {
@@ -27,15 +28,18 @@ function SelectPlantScreen() {
 
   const handlePlantChange = (e) => {
     setSelectedPlant(e.target.value);
+    setSelectedPlantName(plants.find((plant) => plant.PLANT_NO === e.target.value)?.NAME);
+    console.log(selectedPlantName);
 };
 
 const handleSave = async () => {
   if (selectedPlant) {
       // Save selectedPlant to local storage
       await localStorage.setItem('PLANT_NO', selectedPlant);
+      await localStorage.setItem('PLANT_NAME', selectedPlantName);
       
       // Navigate to Audit page using React Router
-      await navigate('/menu ');
+      await navigate('/menu');
   }
 };
   return (

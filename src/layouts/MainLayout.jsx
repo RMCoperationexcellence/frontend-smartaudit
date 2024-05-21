@@ -1,44 +1,34 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { AppBar, Toolbar, Typography, IconButton, Box, Button } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { ExitToApp } from "@mui/icons-material";
-import { logout } from "../services/Auth/AuthService";
-import { useNavigate } from 'react-router-dom';
+import MenuIcon from '@mui/icons-material/Menu';
+import SidebarMenu from '../components/Sidebar'; // Import SidebarMenu component
 
 const MainLayout = ({ children }) => {
-  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
-  const handleLogout = () => {
-    // Your logout logic
-    logout();
+
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
   };
-
-  const handleBack = () => {
-    navigate(-1);
-  }
 
   return (
     <div>
-            <AppBar position="static" sx={{backgroundColor: '#00BBF2'}}>
+      <AppBar position="static" sx={{ backgroundColor: '#00BBF2' }}>
         <Toolbar>
-        <IconButton color="inherit" edge="start" onClick={handleBack} sx={{ mr: 2 }}>
-                        <ArrowBackIcon />
-                    </IconButton>
+          <IconButton color="inherit" edge="start" sx={{ mr: 2 }} onClick={toggleDrawer(true)}>
+            {/* Call toggleDrawer with true to open the drawer */}
+            <MenuIcon />
+          </IconButton>
           <Typography variant="h6" component="div">
             Smart Audit
           </Typography>
           <Button color="inherit"></Button>
           <Box sx={{ flexGrow: 1 }} />
-          <IconButton
-            color="inherit"
-            aria-label="logout"
-            onClick={handleLogout}
-          >
-            <ExitToApp />
-          </IconButton>
         </Toolbar>
       </AppBar>
       {children}
+      <SidebarMenu open={open} toggleDrawer={toggleDrawer} /> {/* Pass open state and toggleDrawer function as props */}
     </div>
   );
 };
