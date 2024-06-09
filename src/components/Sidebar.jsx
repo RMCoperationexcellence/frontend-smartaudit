@@ -31,7 +31,7 @@ export default function SidebarMenu({ open, toggleDrawer }) {
           </ListItem>
           <Divider /> 
           <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate('/auditform')}>
+            <ListItemButton onClick={() => navigate('/factoryactual')}>
               <ListItemIcon>
                 <FactoryIcon />
               </ListItemIcon>
@@ -71,7 +71,16 @@ export default function SidebarMenu({ open, toggleDrawer }) {
               <ListItemIcon>
                 <ZoomInMap />
               </ListItemIcon>
-              <ListItemText primary={'Map'}/>
+              <ListItemText primary={'Map (test)'}/>
+            </ListItemButton>
+          </ListItem>
+          <Divider />
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate('/summary')}>
+              <ListItemIcon>
+                <ZoomInMap />
+              </ListItemIcon>
+              <ListItemText primary={'Summary (test)'}/>
             </ListItemButton>
           </ListItem>
       </List>

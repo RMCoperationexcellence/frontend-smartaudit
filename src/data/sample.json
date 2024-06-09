@@ -1,1 +1,1 @@
-[{ "no": 1, "score": 3, "description": "เข้าใจถูกต้อง" },{ "no": 2, "score": 0, "description": "เข้าใจไม่ถูกต้อง" }]
+[{"no": 1, "score": 3, "description": "ผ่านครบทุกคน"}, {"no": 2, "score": 2, "description": "ผ่านไม่ครบทุกคน"}, {"no": 3, "score": 1, "description": "อบรมแต่ยังสอบไม่ผ่านทุกคน"}, {"no": 4, "score": 0, "description": "ไม่ดำเนินการ"}, {"no": 5, "score": 3, "description": "รอถึงกำหนดการ"}]

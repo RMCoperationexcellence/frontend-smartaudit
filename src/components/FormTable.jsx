@@ -86,7 +86,7 @@ function FormTable({ question, result, auditGroupId, plantNo, userId }) {
     return max + q.K_SCORE * maxChoiceScore;
   }, 0);
 
-  const actualScore = Object.values(selectedScores).reduce((a, b) => a + b, 0)*2
+    const actualScore = Object.values(selectedScores).reduce((a, b) => a + b, 0)*2
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>

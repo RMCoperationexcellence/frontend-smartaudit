@@ -11,18 +11,20 @@ const getDatesArray = (daysCount) => {
     return dates;
 };
 
+const dates = getDatesArray(7);
+
 const columns = [
     { audit_group_id: 'name', label: 'หัวข้อ' },
     ...getDatesArray(7).map(date => ({ id: date, label: date }))
 ];
 
 const data = [
-    { audit_group_id: 1, name: 'การพัฒนาพนักงาน', '15-05-24': 'A', '16-05-24': 'B', '17-05-24': 'C', '18-05-24': 'A', '19-05-24': 'B', '20-05-24': 'C', '21-05-24': 'A' },
-    { audit_group_id: 2, name: 'การผลิต', '15-05-24': 'A', '16-05-24': 'B', '17-05-24': 'C', '18-05-24': 'A', '19-05-24': 'B', '20-05-24': 'C', '21-05-24': 'A' },
-    { audit_group_id: 3, name: 'การควบคุมคุณภาพ', '15-05-24': 'A', '16-05-24': 'B', '17-05-24': 'C', '18-05-24': 'A', '19-05-24': 'B', '20-05-24': 'C', '21-05-24': 'A' },
-    { audit_group_id: 4, name: 'การบำรุงรักษาเครื่องจักร', '15-05-24': 'A', '16-05-24': 'B', '17-05-24': 'C', '18-05-24': 'A', '19-05-24': 'B', '20-05-24': 'C', '21-05-24': 'A' },
-    { audit_group_id: 5, name: 'ความปลอดภัย', '15-05-24': 'A', '16-05-24': 'B', '17-05-24': 'C', '18-05-24': 'A', '19-05-24': 'B', '20-05-24': 'C', '21-05-24': 'A' },
-    { audit_group_id: 6, name: 'สิ่งแวดล้อม', '15-05-24': 'A', '16-05-24': 'B', '17-05-24': 'C', '18-05-24': 'A', '19-05-24': 'B', '20-05-24': 'C', '21-05-24': 'A' }
+    { audit_group_id: 1, name: 'การพัฒนาพนักงาน', [dates[0]]: 'A', [dates[1]]: 'B', [dates[2]]: 'C', [dates[3]]: 'A', [dates[4]]: 'B', [dates[5]]: 'C', [dates[6]]: 'A' },
+    { audit_group_id: 2, name: 'การผลิต', [dates[0]]: 'A', [dates[1]]: 'B', [dates[2]]: 'C', [dates[3]]: 'A', [dates[4]]: 'B', [dates[5]]: 'C', [dates[6]]: 'A' },
+    { audit_group_id: 3, name: 'การควบคุมคุณภาพ', [dates[0]]: 'A', [dates[1]]: 'B', [dates[2]]: 'C', [dates[3]]: 'A', [dates[4]]: 'B', [dates[5]]: 'C', [dates[6]]: 'A' },
+    { audit_group_id: 4, name: 'การบำรุงรักษาเครื่องจักร', [dates[0]]: 'A', [dates[1]]: 'B', [dates[2]]: 'C', [dates[3]]: 'A', [dates[4]]: 'B', [dates[5]]: 'C', [dates[6]]: 'A' },
+    { audit_group_id: 5, name: 'ความปลอดภัย', [dates[0]]: 'A', [dates[1]]: 'B', [dates[2]]: 'C', [dates[3]]: 'A', [dates[4]]: 'B', [dates[5]]: 'C', [dates[6]]: 'A' },
+    { audit_group_id: 6, name: 'สิ่งแวดล้อม', [dates[0]]: 'A', [dates[1]]: 'B', [dates[2]]: 'C', [dates[3]]: 'A', [dates[4]]: 'B', [dates[5]]: 'C', [dates[6]]: 'A' }
 ];
 
 export default function AuditResultTable(result) {
