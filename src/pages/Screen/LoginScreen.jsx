@@ -8,8 +8,17 @@ function LoginScreen() {
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleLogin = async () => {
+        let formattedEmail = email;
+        // Append @scg.com if not already present
+        if (!email.endsWith('@scg.com')) {
+            formattedEmail += '@scg.com';
+        }
+
+        // Remove @scg.com before sending to login function
+        const emailToSend = formattedEmail.replace('@scg.com', '');
+
         try {
-            await login(email, password);
+            await login(emailToSend, password);
             // Redirect to home page after successful login
             window.location.href = '/selectPlant';
         } catch (error) {
@@ -70,6 +79,9 @@ function LoginScreen() {
                     {errorMessage && <Typography color="error" sx={{ marginTop: '20px' }}>{errorMessage}</Typography>}
                 </Box>
             </Box>
+            <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 5 }}>
+                © {new Date().getFullYear()} CPAC System Management
+            </Typography>
         </Container>
     );
 }

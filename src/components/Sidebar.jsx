@@ -66,23 +66,6 @@ export default function SidebarMenu({ open, toggleDrawer }) {
             </ListItemButton>
           </ListItem>
           <Divider />
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate('/map')}>
-              <ListItemIcon>
-                <ZoomInMap />
-              </ListItemIcon>
-              <ListItemText primary={'Map (test)'}/>
-            </ListItemButton>
-          </ListItem>
-          <Divider />
-          <ListItem disablePadding>
-            <ListItemButton onClick={() => navigate('/summary')}>
-              <ListItemIcon>
-                <ZoomInMap />
-              </ListItemIcon>
-              <ListItemText primary={'Summary (test)'}/>
-            </ListItemButton>
-          </ListItem>
       </List>
     </Box>
   );

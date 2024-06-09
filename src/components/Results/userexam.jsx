@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Typography, Card, CardHeader, CardContent, Avatar, IconButton } from '@mui/material';
+import { Typography, Card, CardHeader, CardContent, Avatar, IconButton, Table, TableHead, TableBody, TableRow, TableCell } from '@mui/material';
 import { getuserEXAM } from '../../services/Api/Get/GetRMCOP';
 import { getPlantNo } from '../../services/Storage/PlantService';
 import { red, green, yellow } from '@mui/material/colors';
@@ -9,6 +9,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
 function UserExamCard() {
+  const getEmoji = (value) => (value === 1 ? '🟢' : '🔴');
+
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -18,13 +20,14 @@ function UserExamCard() {
     PRACTICE: 0,
     RESKILL: 0  
   });
-  const [expanded, setExpanded] = useState(false); // State for expanded card
-
+  const [expanded, setExpanded] = useState(false);
+  const [userDevelopments, setUserDevelopments] = useState([]);
+  
   const plantNo = getPlantNo();
 
   useEffect(() => {
-    setLoading(true);
-    async function fetchUserData() {
+    const fetchUserData = async () => {
+      setLoading(true);
       try {
         const data = await getuserEXAM(plantNo);
         if (data) {
@@ -35,7 +38,7 @@ function UserExamCard() {
             RESKILL: data.filter(item => item.RESKILL === 1).length
           };
           setCategoriesCount(counts);
-          setUserData(data); // Keep original data in state if needed elsewhere
+          setUserData(data);
         }
         setLoading(false);
       } catch (err) {
@@ -43,10 +46,25 @@ function UserExamCard() {
         setError(err.toString());
         setLoading(false);
       }
+    };
+
+    const fetchUserDevelopments = async () => {
+      try {
+        const data = await getuserEXAM(plantNo);
+        setUserDevelopments(data);
+      } catch (err) {
+        console.error('Failed to fetch user developments: ', err);
+      }
+    };
+
+    if (expanded) {
+      fetchUserDevelopments();
+    } else {
+      setUserDevelopments([]);
     }
 
     fetchUserData();
-  }, [plantNo]); // Dependency array includes plantNo
+  }, [plantNo, expanded]);
 
   return (
     <Card sx={{ width: 350 }}>
@@ -54,7 +72,7 @@ function UserExamCard() {
         title="การพัฒนาพนักงาน"
         subheader="ข้อมูลวันที่ 22 พฤษภาคม 2567"
         sx={{ textAlign: 'center' }}
-        action={ // Add action prop to include the expand button
+        action={
           <IconButton onClick={() => setExpanded(!expanded)} aria-expanded={expanded} aria-label="show more">
             {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </IconButton>
@@ -74,6 +92,32 @@ function UserExamCard() {
                   total={userData ? userData.length : 0}
                 />
               ))}
+              {expanded && (
+                <Table sx={{ margin: '10px', width: '90%' }} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>ชื่อ-นามสกุล</TableCell>
+                      <TableCell align="center">ภาคทฤษฎี</TableCell>
+                      <TableCell align="center">OJT</TableCell>
+                      <TableCell align="center">ภาคปฏิบัติ</TableCell>
+                      <TableCell align="center">Reskill</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {userDevelopments.map((row, index) => (
+                      <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        <TableCell component="th" scope="row">
+                          {row.fullname}
+                        </TableCell>
+                        <TableCell align="center">{getEmoji(row.EXAM)}</TableCell>
+                        <TableCell align="center">{getEmoji(row.OJT)}</TableCell>
+                        <TableCell align="center">{getEmoji(row.PRACTICE)}</TableCell>
+                        <TableCell align="center">{getEmoji(row.RESKILL)}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
             </>
           )}
         </CardContent>
@@ -83,9 +127,7 @@ function UserExamCard() {
 }
 
 const AvatarContent = ({ label, count, total }) => {
-  // Calculate percentage
   const percentage = total !== 0 ? (count / total) * 100 : 0;
-  // Determine color based on percentage
   let avatarColor;
   if (percentage >= 75) {
     avatarColor = green[500];

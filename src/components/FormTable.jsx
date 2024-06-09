@@ -1,4 +1,3 @@
-// FormTable.jsx
 import { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
@@ -60,7 +59,8 @@ function FormTable({ question, result, auditGroupId, plantNo, userId }) {
 
   const handleSubmit = async () => {
     const scores = question.map((row) => {
-      const selectedChoice = row.CHOICE.find((choice) => choice.score === selectedScores[row.QUESTION_ID]);
+      const choices = JSON.parse(row.CHOICE);
+      const selectedChoice = choices.find((choice) => choice.score === selectedScores[row.QUESTION_ID]);
       return {
         audit_group_id: auditGroupId,
         question_id: row.QUESTION_ID,
@@ -82,11 +82,12 @@ function FormTable({ question, result, auditGroupId, plantNo, userId }) {
   };
 
   const maxScore = question.reduce((max, q) => {
-    const maxChoiceScore = Math.max(...q.CHOICE.map(choice => choice.score));
+    const choices = JSON.parse(q.CHOICE);
+    const maxChoiceScore = Math.max(...choices.map(choice => choice.score));
     return max + q.K_SCORE * maxChoiceScore;
   }, 0);
 
-    const actualScore = Object.values(selectedScores).reduce((a, b) => a + b, 0)*2
+  const actualScore = Object.values(selectedScores).reduce((a, b) => a + b, 0) * 2;
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
@@ -106,33 +107,36 @@ function FormTable({ question, result, auditGroupId, plantNo, userId }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {question.map((row) => (
-              <StyledTableRow key={row.QUESTION_ID}>
-                <StyledTableCell component="th" scope="row">
-                  {row.QUESTION_TEXT}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  <Select
-                    value={selectedScores[row.QUESTION_ID] || ''}
-                    onChange={(event) => handleSelectChange(row.QUESTION_ID, event.target.value)}
-                    sx={{
-                      width: 150,
-                      borderRadius: 5,
-                      textAlign: 'center',
-                      backgroundColor: HandleColorStatus(selectedScores[row.QUESTION_ID]),
-                      border: 'none',
-                      color: 'white',
-                    }}
-                  >
-                    {row.CHOICE.map((choice) => (
-                      <MenuItem key={choice.no} value={choice.score}>
-                        {choice.description}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </StyledTableCell>
-              </StyledTableRow>
-            ))}
+            {question.map((row) => {
+              const choices = JSON.parse(row.CHOICE);
+              return (
+                <StyledTableRow key={row.QUESTION_ID}>
+                  <StyledTableCell component="th" scope="row">
+                    {row.QUESTION_TEXT}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    <Select
+                      value={selectedScores[row.QUESTION_ID] || ''}
+                      onChange={(event) => handleSelectChange(row.QUESTION_ID, event.target.value)}
+                      sx={{
+                        width: 150,
+                        borderRadius: 5,
+                        textAlign: 'center',
+                        backgroundColor: HandleColorStatus(selectedScores[row.QUESTION_ID]),
+                        border: 'none',
+                        color: 'white',
+                      }}
+                    >
+                      {choices.map((choice) => (
+                        <MenuItem key={choice.no} value={choice.score}>
+                          {choice.description}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </StyledTableCell>
+                </StyledTableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
@@ -149,13 +153,8 @@ FormTable.propTypes = {
     PropTypes.shape({
       QUESTION_ID: PropTypes.any.isRequired,
       QUESTION_TEXT: PropTypes.string.isRequired,
-      CHOICE: PropTypes.arrayOf(
-        PropTypes.shape({
-          no: PropTypes.any.isRequired,
-          score: PropTypes.any.isRequired,
-          description: PropTypes.string.isRequired,
-        })
-      ),
+      CHOICE: PropTypes.string.isRequired,
+      K_SCORE: PropTypes.number.isRequired,
     })
   ).isRequired,
   auditGroupId: PropTypes.any.isRequired,
