@@ -10,4 +10,13 @@ const PostForm = {
   }
 };
 
-export default PostForm;
+const PostUpdate = async (scores) => {
+  try {
+    const response = await axios.post(`${API_URL}/auditPostForm/update`, scores); // Adjust the endpoint if necessary
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message || "Failed to update data.");
+  }
+};
+
+export { PostForm, PostUpdate };

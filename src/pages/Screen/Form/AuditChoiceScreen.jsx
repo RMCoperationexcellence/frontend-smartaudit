@@ -4,7 +4,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import ChoiceLayout from "../../../layouts/ChoiceLayout";
 import FormTable from "../../../components/FormTable";
 import { getAuditQuestion, getAuditQuestionResult } from "../../../services/Api/Get/GetAuditForm";
-import { getEmpId } from "../../../services/Storage/UserService";
+import { getEmpId} from "../../../services/Storage/UserService";
 import { getPlantNo } from "../../../services/Storage/PlantService";
 
 function AuditChoiceScreen() {
@@ -14,6 +14,7 @@ function AuditChoiceScreen() {
   const [loading, setLoading] = useState(true);
   const plantNo = getPlantNo();
   const user = getEmpId();
+  // const permission = getLevel();
 
   useEffect(() => {
     async function fetchData() {

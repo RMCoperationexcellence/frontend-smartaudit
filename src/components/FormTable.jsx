@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import PropTypes from "prop-types";
 import { HandleColorStatus } from "../util/colorStatus";
-import PostForm from "../services/Api/Post/PostForm";
+import {PostForm} from "../services/Api/Post/PostForm";
 import SuccessSnackbar from "../components/Alert/successAlert";
 
 const StyledTableCell = styled(TableCell)(({ theme, isMust }) => ({

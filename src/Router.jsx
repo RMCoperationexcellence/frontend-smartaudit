@@ -123,7 +123,7 @@ export default function Router({ isAuthenticated }) {
             }
           />
                               <Route
-            path="/AuditResultDetail/:auditResultId"
+            path="/AuditResult/:auditResultId"
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated} isPlantRequired>
                 <AuditResultDetailScreen />

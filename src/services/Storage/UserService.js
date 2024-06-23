@@ -1,3 +1,5 @@
+// UserService.js
+import { decrypt } from "../../util/decrypt";
 const storeUser = (user) => {
     localStorage.setItem('user',user);
 }
