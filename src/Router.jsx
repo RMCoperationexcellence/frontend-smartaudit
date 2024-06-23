@@ -5,6 +5,7 @@ import { Suspense, lazy } from "react";
 import { isPlantChecked } from "./services/Storage/PlantService";
 import LinearProgress from '@mui/material/LinearProgress';
 import MapScreen from "./pages/Screen/summary/MapScreen";
+import TestScreen from "./pages/Screen/TestScreen";
 
 const LoginScreen = lazy(() => import("./pages/Screen/LoginScreen"));
 const SelectPlantScreen = lazy(() => import("./pages/Screen/SelectPlantScreen"));
@@ -16,6 +17,8 @@ const AuditFormScreen = lazy(() => import("./pages/Screen/Form/AuditFormScreen")
 const AuditChoiceScreen = lazy(() => import("./pages/Screen/Form/AuditChoiceScreen"));
 const QuestionManagementScreen = lazy(() => import("./pages/web-master/QuestionManagement"));
 const SummaryScreen = lazy(() => import("./pages/Screen/summary/SummaryScreen"));
+const AuditResultDetailScreen = lazy(() => import("./pages/Screen/Results/AuditResultDetailScreen"));
+
 
 const ProtectedRoute = ({ children, isAuthenticated, isPlantRequired = false }) => {
   if (!isAuthenticated) {
@@ -116,6 +119,22 @@ export default function Router({ isAuthenticated }) {
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated} isPlantRequired>
                 <SummaryScreen />
+              </ProtectedRoute>
+            }
+          />
+                              <Route
+            path="/AuditResultDetail/:auditResultId"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated} isPlantRequired>
+                <AuditResultDetailScreen />
+              </ProtectedRoute>
+            }
+          />
+                              <Route
+            path="/test"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated} isPlantRequired>
+                <TestScreen />
               </ProtectedRoute>
             }
           />

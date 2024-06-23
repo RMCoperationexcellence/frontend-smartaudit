@@ -13,4 +13,24 @@ const getuserEXAM = async (plant_no) => {
     }
 };
 
-export { getuserEXAM };
+const getSafety = async (plant_no) => {
+    try {
+        const response = await axios.get(`${API_URL}/plantSafety?plant_no=${plant_no}`);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch plant list:', error);
+        throw error;
+    }
+}
+
+const getENV = async (plant_no) => {
+    try {
+        const response = await axios.get(`${API_URL}/plantENV?plant_no=${plant_no}`);
+        return response.data;
+    } catch (error) {
+        console.error('Failed to fetch plant list:', error);
+        throw error;
+    }
+}
+
+export { getuserEXAM, getENV, getSafety };

@@ -8,6 +8,7 @@ const login = async (username, password) => {
         const response = await axios.post(`${API_URL}/login`, { username, password });
         if (response.data.success) {
             localStorage.setItem('userToken', response.data.token);  // Save the token
+            localStorage.setItem('profile', JSON.stringify(response.data));
             storeUser(username);
             return response.data;
         }

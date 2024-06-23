@@ -3,6 +3,7 @@ import AuditResultTable from "../../../components/AuditResultTable";
 import MainLayout from "../../../layouts/MainLayout";
 import { getPlantName, getPlantNo } from "../../../services/Storage/PlantService";
 import { getAuditResult } from "../../../services/Api/Get/GetResults";
+import AuditResultList from "../../../components/AuditResultList";
 
 function AuditResultScreen() {
   const [auditData, setAuditData] = useState([]);
@@ -27,15 +28,18 @@ function AuditResultScreen() {
     fetchData();
   }, [PlantNo]);
 
+  const AbnormalData = auditData.filter(item => item.isFinished === 0);
+
   return (
     <MainLayout>
       <div className="centerContent">
-        โรงงาน : {PlantName} / {PlantNo}
+        <h3> โรงงาน : {PlantName} / {PlantNo}</h3>
         {loading ? (
           <p>Loading...</p>
         ) : (
-          <AuditResultTable auditData={auditData} />
+          <AuditResultTable auditData={AbnormalData} />
         )}
+        <AuditResultList data={AbnormalData} />
       </div>
     </MainLayout>
   );

@@ -8,7 +8,7 @@ const getAuditGroup = async () => {
         const response = await axios.get(`${API_URL}/auditform/auditgroup`);
         return response.data;
     } catch (error) {
-        console.error('Failed to fetch plant list:', error);
+        console.error('Failed to fetch auditgroup:', error);
         throw error;
     }
 }

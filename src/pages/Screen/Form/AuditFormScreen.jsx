@@ -51,7 +51,7 @@ function AuditFormScreen() {
             </div>
             <div style={{ textAlign: "left", display: "flex", flexDirection: "column" }}>
               <Typography variant="h8">Verify โดย :</Typography>
-              <Typography variant="h8">{formData ? formData.CREATE_BY_USER_ID : '-'}</Typography>
+              <Typography variant="h8">{formData ? formData.CREATE_BY_USER_NAME : '-'}</Typography>
             </div>
           </div>
         </div>

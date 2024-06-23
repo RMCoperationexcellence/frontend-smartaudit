@@ -4,7 +4,7 @@ import { getuserEXAM } from '../../services/Api/Get/GetRMCOP';
 import { getPlantNo } from '../../services/Storage/PlantService';
 import { red, green, yellow } from '@mui/material/colors';
 import PropTypes from 'prop-types';
-import LoadingCircle from './../Loading/LoadingCircle';
+import LoadingCircle from '../Loading/LoadingCircle';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
@@ -18,11 +18,11 @@ function UserExamCard() {
     EXAM: 0,
     OJT: 0,
     PRACTICE: 0,
-    RESKILL: 0  
+    RESKILL: 0
   });
   const [expanded, setExpanded] = useState(false);
   const [userDevelopments, setUserDevelopments] = useState([]);
-  
+
   const plantNo = getPlantNo();
 
   useEffect(() => {
@@ -66,31 +66,51 @@ function UserExamCard() {
     fetchUserData();
   }, [plantNo, expanded]);
 
+  const groupCategoriesInPairs = (categories) => {
+    const pairs = [];
+    for (let i = 0; i < categories.length; i += 2) {
+      pairs.push(categories.slice(i, i + 2));
+    }
+    return pairs;
+  };
+
+
+  const categoryTranslations = {
+    EXAM: 'ภาคทฤษฎี',
+    OJT: 'การ OJT',
+    PRACTICE: 'ภาคปฏิบัติ',
+    RESKILL: 'การ Reskill'
+  };
+
   return (
     <Card sx={{ width: 350 }}>
       <CardHeader
         title="การพัฒนาพนักงาน"
-        subheader="ข้อมูลวันที่ 22 พฤษภาคม 2567"
-        sx={{ textAlign: 'center' }}
+        sx={{ textAlign: 'center', backgroundColor: '#00BBF2', color: 'white' }}
         action={
           <IconButton onClick={() => setExpanded(!expanded)} aria-expanded={expanded} aria-label="show more">
             {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
           </IconButton>
         }
       />
-      {(expanded || (!loading && !error)) && 
+      {(expanded || (!loading && !error)) &&
         <CardContent>
           {loading && <LoadingCircle />}
           {error && <Typography>Error: {error}</Typography>}
           {!loading && !error && (
             <>
-              {Object.entries(categoriesCount).map(([category, count]) => (
-                <AvatarContent
-                  key={category}
-                  label={category}
-                  count={count}
-                  total={userData ? userData.length : 0}
-                />
+              {groupCategoriesInPairs(Object.entries(categoriesCount)).map((pair, index) => (
+                <div key={index} style={{ display: 'flex', justifyContent: 'left' }}>
+                  {pair.map(([category, count]) => (
+                    <AvatarContent
+                      key={category}
+                      label={categoryTranslations[category]}
+                      count={count}
+                      total={userData ? userData.length : 0}
+                      sx={{ margin: '10px' }}
+                    />
+                  ))}
+                </div>
               ))}
               {expanded && (
                 <Table sx={{ margin: '10px', width: '90%' }} aria-label="simple table">
@@ -150,7 +170,7 @@ const AvatarContent = ({ label, count, total }) => {
 AvatarContent.propTypes = {
   label: PropTypes.string.isRequired,
   count: PropTypes.number.isRequired,
-  total: PropTypes.number.isRequired,   
+  total: PropTypes.number.isRequired,
 };
 
 export default UserExamCard;

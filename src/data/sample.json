@@ -1,1 +1,18 @@
-[{"no": 1, "score": 3, "description": "ผ่านครบทุกคน"}, {"no": 2, "score": 2, "description": "ผ่านไม่ครบทุกคน"}, {"no": 3, "score": 1, "description": "อบรมแต่ยังสอบไม่ผ่านทุกคน"}, {"no": 4, "score": 0, "description": "ไม่ดำเนินการ"}, {"no": 5, "score": 3, "description": "รอถึงกำหนดการ"}]
+{
+    "PLANT_NO": "13T2",
+    "plant_name": "โรจนะ 2",
+    "AUDIT_GROUP_ID": 2,
+    "group_name": "การผลิต",
+    "MustPassCount": 0,
+    "ActualScore": 0,
+    "TotalScore": 108
+}
+{
+    "PLANT_NO": "13T2",
+    "plant_name": "โรจนะ 2",
+    "AUDIT_GROUP_ID": 3,
+    "group_name": "การควบคุมคุณภาพ",
+    "MustPassCount": 0,
+    "ActualScore": 0,
+    "TotalScore": 102
+}
