@@ -48,7 +48,7 @@ const AuditResultList = ({ data }) => {
   const navigate = useNavigate(); // Initialize the useNavigate hook
 
   const handleCardClick = (auditResultId) => {
-    navigate(`/AuditResultDetail/${auditResultId}`); // Update the navigation path
+    navigate(`/AuditResult/${auditResultId}`); // Update the navigation path
   };
 
   return (
@@ -65,15 +65,13 @@ const AuditResultList = ({ data }) => {
                 color: 'white'
               }}
               title={<Typography variant="h5">{item.NAME}</Typography>}
-              subheader={<Typography variant="body1">{item.QUESTION_TEXT}</Typography>}
+              subheader={<Typography variant="body1">{item.VERIFY_STATUS} - {item.QUESTION_TEXT}</Typography>}
             />
             <CardContent>
               <Typography variant="body1" color="text.secondary">
-                สถานะ: {item.VERIFY_STATUS}
-                <br />
+                {/* สถานะ: {item.VERIFY_STATUS}
+                <br /> */}
                 วันที่: {item ? convertToThaiTime(item.UPDATE_DATE) : '-'}
-                <br />
-                โรงงาน: {item.PLANT_NO}
                 <br />
                 Verify โดย: {item.CREATE_BY_USER_NAME}
               </Typography>

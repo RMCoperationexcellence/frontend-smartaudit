@@ -36,16 +36,18 @@ const AuditResultDetailScreen = () => {
     const fetchData = async () => {
       try {
         const auditResults = await getAuditResultDetail(auditResultId);
-        setAuditData(auditResults);
+        const auditResult = auditResults[0]; // Assuming you are getting an array of results
+        setAuditData(auditResult);
+
         // Set initial form data if needed
-        if (auditResults) {
+        if (auditResult) {
           setFormData({
-            FactoryHead_choice: auditResults.FactoryHead_choice || 0,
-            FactoryHead_desc: auditResults.FactoryHead_desc || "",
-            DeptManager_choice: auditResults.DeptManager_choice || 0,
-            DeptManager_desc: auditResults.DeptManager_desc || "",
-            DivManager_choice: auditResults.DivManager_choice || 0,
-            DivManager_desc: auditResults.DivManager_desc || "",
+            FactoryHead_choice: auditResult.FactoryHead_choice || 0,
+            FactoryHead_desc: auditResult.FactoryHead_desc || "",
+            DeptManager_choice: auditResult.DeptManager_choice || 0,
+            DeptManager_desc: auditResult.DeptManager_desc || "",
+            DivManager_choice: auditResult.DivManager_choice || 0,
+            DivManager_desc: auditResult.DivManager_desc || "",
           });
         }
       } catch (error) {
@@ -59,10 +61,10 @@ const AuditResultDetailScreen = () => {
     fetchData();
   }, [auditResultId]);
 
-  const handleCheckboxChange = (field, checked) => {
+  const handleCheckboxChange = (field, checked, value) => {
     setFormData((prevData) => ({
       ...prevData,
-      [field]: checked ? 1 : 0,
+      [field]: checked ? value : 0,
     }));
   };
 
@@ -92,7 +94,6 @@ const AuditResultDetailScreen = () => {
       alert("Failed to submit data. Please try again.");
     }
   };
-  
 
   if (loading) {
     return (
@@ -136,7 +137,7 @@ const AuditResultDetailScreen = () => {
                     control={
                       <Checkbox
                         checked={!!formData.FactoryHead_choice}
-                        onChange={(event) => handleCheckboxChange("FactoryHead_choice", event.target.checked)}
+                        onChange={(event) => handleCheckboxChange("FactoryHead_choice", event.target.checked, 1)}
                         name="FactoryHead_choice"
                       />
                     }
@@ -158,103 +159,102 @@ const AuditResultDetailScreen = () => {
           </ListItem>
           <Divider variant="inset" component="li" />
 
-{/* ActionSection for Department Manager */}
-<ListItem alignItems="flex-start">
-  <ListItemText
-    primary={
-      <Box component="div" sx={{ mb: 2 }}>
-        <Typography variant="h5" component="div" gutterBottom>
-          ผู้จัดการแผนกโดยตรง
-        </Typography>
-      </Box>
-    }
-    secondary={
-      <Box component="div">
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={formData.DeptManager_choice === 1}
-              onChange={(event) => handleCheckboxChange("DeptManager_choice", event.target.checked)}
-              name="DeptManager_choice"
+          {/* ActionSection for Department Manager */}
+          <ListItem alignItems="flex-start">
+            <ListItemText
+              primary={
+                <Box component="div" sx={{ mb: 2 }}>
+                  <Typography variant="h5" component="div" gutterBottom>
+                    ผู้จัดการแผนกโดยตรง
+                  </Typography>
+                </Box>
+              }
+              secondary={
+                <Box component="div">
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={formData.DeptManager_choice === 1}
+                        onChange={(event) => handleCheckboxChange("DeptManager_choice", event.target.checked, 1)}
+                        name="DeptManager_choice"
+                      />
+                    }
+                    label="ผ่านมาตรฐาน"
+                    sx={{ mb: 1, mr: 1 }}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={formData.DeptManager_choice === 2}
+                        onChange={(event) => handleCheckboxChange("DeptManager_choice", event.target.checked, 2)}
+                        name="DeptManager_choice"
+                      />
+                    }
+                    label="ไม่ผ่านมาตรฐาน"
+                    sx={{ mb: 1, mr: 1 }}
+                  />
+                  <TextField
+                    name="DeptManager_desc"
+                    label="ระบุหมายเหตุ"
+                    variant="outlined"
+                    size="small"
+                    sx={{ mt: 1, backgroundColor: "white", width: "100%" }}
+                    onChange={handleTextFieldChange}
+                    value={formData.DeptManager_desc}
+                  />
+                </Box>
+              }
             />
-          }
-          label="ผ่านมาตรฐาน"
-          sx={{ mb: 1, mr: 1 }}
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={formData.DeptManager_choice === 2}
-              onChange={(event) => handleCheckboxChange("DeptManager_choice", !event.target.checked)}
-              name="DeptManager_choice"
-            />
-          }
-          label="ไม่ผ่านมาตรฐาน"
-          sx={{ mb: 1, mr: 1 }}
-        />
-        <TextField
-          name="DeptManager_desc"
-          label="ระบุหมายเหตุ"
-          variant="outlined"
-          size="small"
-          sx={{ mt: 1, backgroundColor: "white", width: "100%" }}
-          onChange={handleTextFieldChange}
-          value={formData.DeptManager_desc}
-        />
-      </Box>
-    }
-  />
-</ListItem>
-<Divider variant="inset" component="li" />
+          </ListItem>
+          <Divider variant="inset" component="li" />
 
-{/* ActionSection for RMC Manager */}
-<ListItem alignItems="flex-start">
-  <ListItemText
-    primary={
-      <Box component="div" sx={{ mb: 2 }}>
-        <Typography variant="h5" component="div" gutterBottom>
-          RMC Manager / ผู้ Verify / Line Walk
-        </Typography>
-      </Box>
-    }
-    secondary={
-      <Box component="div">
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={formData.DivManager_choice === 1}
-              onChange={(event) => handleCheckboxChange("DivManager_choice", event.target.checked)}
-              name="DivManager_choice"
+          {/* ActionSection for RMC Manager */}
+          <ListItem alignItems="flex-start">
+            <ListItemText
+              primary={
+                <Box component="div" sx={{ mb: 2 }}>
+                  <Typography variant="h5" component="div" gutterBottom>
+                    RMC Manager / ผู้ Verify / Line Walk
+                  </Typography>
+                </Box>
+              }
+              secondary={
+                <Box component="div">
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={formData.DivManager_choice === 1}
+                        onChange={(event) => handleCheckboxChange("DivManager_choice", event.target.checked, 1)}
+                        name="DivManager_choice"
+                      />
+                    }
+                    label="ผ่านมาตรฐาน"
+                    sx={{ mb: 1, mr: 1 }}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={formData.DivManager_choice === 2}
+                        onChange={(event) => handleCheckboxChange("DivManager_choice", event.target.checked, 2)}
+                        name="DivManager_choice"
+                      />
+                    }
+                    label="ไม่ผ่านมาตรฐาน"
+                    sx={{ mb: 1, mr: 1 }}
+                  />
+                  <TextField
+                    name="DivManager_desc"
+                    label="ระบุหมายเหตุ"
+                    variant="outlined"
+                    size="small"
+                    sx={{ mt: 1, backgroundColor: "white", width: "100%" }}
+                    onChange={handleTextFieldChange}
+                    value={formData.DivManager_desc}
+                  />
+                </Box>
+              }
             />
-          }
-          label="ผ่านมาตรฐาน"
-          sx={{ mb: 1, mr: 1 }}
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={formData.DivManager_choice === 2}
-              onChange={(event) => handleCheckboxChange("DivManager_choice", !event.target.checked)}
-              name="DivManager_choice"
-            />
-          }
-          label="ไม่ผ่านมาตรฐาน"
-          sx={{ mb: 1, mr: 1 }}
-        />
-        <TextField
-          name="DivManager_desc"
-          label="ระบุหมายเหตุ"
-          variant="outlined"
-          size="small"
-          sx={{ mt: 1, backgroundColor: "white", width: "100%" }}
-          onChange={handleTextFieldChange}
-          value={formData.DivManager_desc}
-        />
-      </Box>
-    }
-  />
-</ListItem>
-
+          </ListItem>
         </List>
       </Box>
       <Box display="flex" justifyContent="center" mt={4}>
