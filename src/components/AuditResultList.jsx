@@ -33,8 +33,8 @@ const calculateProgressValue = (item) => {
   const DeptManager_choice = parseInt(item.DeptManager_choice);
   const DivManager_choice = parseInt(item.DivManager_choice);
 
-  if (FactoryHead_choice === 0 && DeptManager_choice === 0 && DivManager_choice === 0) {
-    return 0;
+  if (FactoryHead_choice === 1 && DeptManager_choice === 0 && DivManager_choice === 0) {
+    return 15;
   } else if (FactoryHead_choice === 1 && DeptManager_choice === 1 && DivManager_choice === 0) {
     return 50;
   } else if (FactoryHead_choice === 1 && DeptManager_choice === 1 && DivManager_choice === 1) {

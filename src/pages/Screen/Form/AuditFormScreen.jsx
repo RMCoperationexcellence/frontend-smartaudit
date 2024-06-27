@@ -23,6 +23,8 @@ function AuditFormScreen() {
           getAuditGroup(),
           getAuditFormResult(plantNo),
         ]);
+
+        console.log('Audit data: ', formData);
         setAuditData({ group: groupData, form: formData, error: false });
       } catch (error) {
         console.error('Failed to fetch audit data:', error);

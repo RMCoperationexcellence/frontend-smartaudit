@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
@@ -14,12 +14,18 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import TextField from "@mui/material/TextField";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import { getPermission, getPlantVisible } from "../../../services/Storage/UserService";
+import SuccessSnackbar from "../../../components/Alert/successAlert";
 
 const AuditResultDetailScreen = () => {
+  const navigate = useNavigate();
   const { auditResultId } = useParams();
   const [auditData, setAuditData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false); // State for Snackbar visibility
   const [formData, setFormData] = useState({
     FactoryHead_choice: 0,
     FactoryHead_desc: "",
@@ -29,8 +35,8 @@ const AuditResultDetailScreen = () => {
     DivManager_desc: "",
   });
 
-  // Example permissions for the current user
-  const permissions = ["factory_head", "direct_manager", "rmc_manager"];
+  const userPermissions = getPermission();
+  const userPlantVisible = getPlantVisible();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,11 +48,11 @@ const AuditResultDetailScreen = () => {
         // Set initial form data if needed
         if (auditResult) {
           setFormData({
-            FactoryHead_choice: auditResult.FactoryHead_choice || 0,
+            FactoryHead_choice: Number(auditResult.FactoryHead_choice) || 0,
             FactoryHead_desc: auditResult.FactoryHead_desc || "",
-            DeptManager_choice: auditResult.DeptManager_choice || 0,
+            DeptManager_choice: Number(auditResult.DeptManager_choice) || 0,
             DeptManager_desc: auditResult.DeptManager_desc || "",
-            DivManager_choice: auditResult.DivManager_choice || 0,
+            DivManager_choice: Number(auditResult.DivManager_choice) || 0,
             DivManager_desc: auditResult.DivManager_desc || "",
           });
         }
@@ -61,11 +67,25 @@ const AuditResultDetailScreen = () => {
     fetchData();
   }, [auditResultId]);
 
+
+  const PlantVisibleCheck = () => {
+  }
+
   const handleCheckboxChange = (field, checked, value) => {
     setFormData((prevData) => ({
       ...prevData,
       [field]: checked ? value : 0,
     }));
+
+    // Additional logic based on FactoryHead_choice
+    if (field === "FactoryHead_choice" && !checked) {
+      // If FactoryHead_choice becomes unchecked (0), reset other fields
+      setFormData((prevData) => ({
+        ...prevData,
+        DeptManager_choice: 0,
+        DivManager_choice: 0,
+      }));
+    }
   };
 
   const handleTextFieldChange = (event) => {
@@ -74,6 +94,10 @@ const AuditResultDetailScreen = () => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   const handleSubmit = async () => {
@@ -88,7 +112,10 @@ const AuditResultDetailScreen = () => {
         DivManager_desc: formData.DivManager_desc || ""
       }];
       await PostUpdate(dataToSubmit); // Call PostUpdate directly as a function
-      alert("Data submitted successfully!");
+      setSnackbarOpen(true); // Show success snackbar
+      setTimeout(() => {
+        navigate("/auditresult"); // Navigate to /auditresult after successful submission
+      }, 1000); // Wait for the snackbar to close before navigating
     } catch (error) {
       console.error("Error submitting data:", error);
       alert("Failed to submit data. Please try again.");
@@ -120,6 +147,16 @@ const AuditResultDetailScreen = () => {
   return (
     <MainLayout>
       <Box display="flex" justifyContent="center" mt={4}>
+        <Card sx={{ width: "100%", maxWidth: 360 }}>
+          <CardContent>
+            <Typography variant="h5">รายละเอียด</Typography>
+            <Typography>หัวข้อ : {auditData.QUESTION_TEXT}</Typography>
+            <Typography sx={{color: "green"}}> สถานะ : {auditData.CHOICE_RESULTS}</Typography>
+            <Typography sx={{color: "red"}}> คะแนน : {auditData.SCORE}</Typography>
+          </CardContent>
+        </Card>
+      </Box>
+      <Box display="flex" justifyContent="center" mt={4}>
         <List sx={{ width: "100%", maxWidth: 360, bgcolor: "#f0f0f0", borderRadius: 2, p: 2 }}>
           {/* ActionSection for Factory Head */}
           <ListItem alignItems="flex-start">
@@ -139,6 +176,7 @@ const AuditResultDetailScreen = () => {
                         checked={!!formData.FactoryHead_choice}
                         onChange={(event) => handleCheckboxChange("FactoryHead_choice", event.target.checked, 1)}
                         name="FactoryHead_choice"
+                        disabled={userPermissions !== "1" || formData.DeptManager_choice === 1 } // Disable if user doesn't have factory_head permission
                       />
                     }
                     label="รับทราบและดำเนินการแก้ไขแล้ว"
@@ -152,6 +190,7 @@ const AuditResultDetailScreen = () => {
                     sx={{ mt: 1, backgroundColor: "white", width: "100%" }}
                     onChange={handleTextFieldChange}
                     value={formData.FactoryHead_desc}
+                    disabled={userPermissions !== "1"|| formData.FactoryHead_choice === 1 || formData.DeptManager_choice === 1 } // Disable if user doesn't have factory_head permission
                   />
                 </Box>
               }
@@ -177,6 +216,7 @@ const AuditResultDetailScreen = () => {
                         checked={formData.DeptManager_choice === 1}
                         onChange={(event) => handleCheckboxChange("DeptManager_choice", event.target.checked, 1)}
                         name="DeptManager_choice"
+                        disabled={userPermissions !== "2" || !formData.FactoryHead_choice}
                       />
                     }
                     label="ผ่านมาตรฐาน"
@@ -188,6 +228,7 @@ const AuditResultDetailScreen = () => {
                         checked={formData.DeptManager_choice === 2}
                         onChange={(event) => handleCheckboxChange("DeptManager_choice", event.target.checked, 2)}
                         name="DeptManager_choice"
+                        disabled={userPermissions !== "2" || !formData.FactoryHead_choice}
                       />
                     }
                     label="ไม่ผ่านมาตรฐาน"
@@ -201,6 +242,7 @@ const AuditResultDetailScreen = () => {
                     sx={{ mt: 1, backgroundColor: "white", width: "100%" }}
                     onChange={handleTextFieldChange}
                     value={formData.DeptManager_desc}
+                    disabled={userPermissions !== "2" || !formData.FactoryHead_choice}
                   />
                 </Box>
               }
@@ -226,6 +268,11 @@ const AuditResultDetailScreen = () => {
                         checked={formData.DivManager_choice === 1}
                         onChange={(event) => handleCheckboxChange("DivManager_choice", event.target.checked, 1)}
                         name="DivManager_choice"
+                        disabled={
+                          userPermissions !== "3" ||
+                          !formData.FactoryHead_choice ||
+                          formData.DeptManager_choice !== 1
+                        }
                       />
                     }
                     label="ผ่านมาตรฐาน"
@@ -237,6 +284,11 @@ const AuditResultDetailScreen = () => {
                         checked={formData.DivManager_choice === 2}
                         onChange={(event) => handleCheckboxChange("DivManager_choice", event.target.checked, 2)}
                         name="DivManager_choice"
+                        disabled={
+                          userPermissions !== "3" ||
+                          !formData.FactoryHead_choice ||
+                          formData.DeptManager_choice !== 1
+                        }
                       />
                     }
                     label="ไม่ผ่านมาตรฐาน"
@@ -250,6 +302,11 @@ const AuditResultDetailScreen = () => {
                     sx={{ mt: 1, backgroundColor: "white", width: "100%" }}
                     onChange={handleTextFieldChange}
                     value={formData.DivManager_desc}
+                    disabled={
+                      userPermissions !== "3" ||
+                      !formData.FactoryHead_choice ||
+                      formData.DeptManager_choice !== 1
+                    }
                   />
                 </Box>
               }
@@ -262,6 +319,7 @@ const AuditResultDetailScreen = () => {
           ยืนยัน
         </Button>
       </Box>
+      <SuccessSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} />
     </MainLayout>
   );
 };

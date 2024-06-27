@@ -25,8 +25,6 @@ function AuditChoiceScreen() {
         ]);
         setAuditData(auditQuestions);
         setResultData(auditResults);
-        console.log("from Questions", auditQuestions);
-        console.log("from Results", auditResults);
       } catch (error) {
         console.error("Error fetching audit data:", error);
       } finally {

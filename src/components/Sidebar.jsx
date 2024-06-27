@@ -14,6 +14,7 @@ import { logout } from '../services/Auth/AuthService';
 import { useNavigate } from 'react-router-dom';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import DescriptionIcon from '@mui/icons-material/Description';
+import TableChartIcon from '@mui/icons-material/TableChart';
 import { ZoomInMap } from '@mui/icons-material';
 
 export default function SidebarMenu({ open, toggleDrawer }) {
@@ -56,16 +57,24 @@ export default function SidebarMenu({ open, toggleDrawer }) {
               <ListItemText primary={'ผล Verify'} />
             </ListItemButton>
           </ListItem>
+          <Divider /> 
+          <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate('/dashboard/plants')}>
+              <ListItemIcon>
+                <TableChartIcon />
+              </ListItemIcon>
+              <ListItemText primary={'ผลสรุป รายโรงงาน'} />
+            </ListItemButton>
+          </ListItem>
           <Divider />
           <ListItem disablePadding>
             <ListItemButton onClick={logout}>
               <ListItemIcon>
-                <ExitToApp />
+                <ExitToApp sx={{ color: 'red' }} />
               </ListItemIcon>
-              <ListItemText primary={'ออกจากระบบ'}/>
+              <ListItemText primary={'ออกจากระบบ'} sx={{ color: 'red' }}/>
             </ListItemButton>
           </ListItem>
-          <Divider />
       </List>
     </Box>
   );

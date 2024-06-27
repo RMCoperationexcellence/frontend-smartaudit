@@ -11,7 +11,7 @@ export function convertToThaiTime(utcTime) {
   const date = new Date(utcTime);
   
   // Adjust for Thai time (UTC+7)
-  date.setHours(date.getHours() + 7);
+  date.setHours(date.getHours() - 7);
   
   const thaiDay = date.getDate();
   const thaiMonth = months[date.getMonth()];

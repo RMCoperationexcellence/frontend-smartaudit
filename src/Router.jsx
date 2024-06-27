@@ -6,6 +6,7 @@ import { isPlantChecked } from "./services/Storage/PlantService";
 import LinearProgress from '@mui/material/LinearProgress';
 import MapScreen from "./pages/Screen/summary/MapScreen";
 import TestScreen from "./pages/Screen/TestScreen";
+import PlantDashboardScreen from "./pages/Screen/Dashboard/PlantDashboardScreen";
 
 const LoginScreen = lazy(() => import("./pages/Screen/LoginScreen"));
 const SelectPlantScreen = lazy(() => import("./pages/Screen/SelectPlantScreen"));
@@ -127,6 +128,14 @@ export default function Router({ isAuthenticated }) {
             element={
               <ProtectedRoute isAuthenticated={isAuthenticated} isPlantRequired>
                 <AuditResultDetailScreen />
+              </ProtectedRoute>
+            }
+          />
+                                        <Route
+            path="/dashboard/plants"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated} isPlantRequired>
+                <PlantDashboardScreen />
               </ProtectedRoute>
             }
           />

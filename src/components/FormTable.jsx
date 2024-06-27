@@ -181,7 +181,7 @@ function FormTable({ question, result, auditGroupId, plantNo, userId }) {
             <TableRow>
               <StyledTableCell align="center">รายการ</StyledTableCell>
               <StyledTableCell align="center">ผล Verify</StyledTableCell>
-              <StyledTableCell align="center">คะแนน</StyledTableCell>{" "}
+              {/* <StyledTableCell align="center">คะแนน</StyledTableCell>{" "} */}
               {/* New column for score */}
             </TableRow>
           </TableHead>
@@ -218,11 +218,11 @@ function FormTable({ question, result, auditGroupId, plantNo, userId }) {
                       ))}
                     </Select>
                   </StyledTableCell>
-                  <StyledTableCell align="center">
+                  {/* <StyledTableCell align="center">
                     {selectedScores[row.QUESTION_ID] !== undefined
                       ? selectedScores[row.QUESTION_ID] * 2
                       : "-"}
-                  </StyledTableCell>
+                  </StyledTableCell> */}
                 </StyledTableRow>
               );
             })}
