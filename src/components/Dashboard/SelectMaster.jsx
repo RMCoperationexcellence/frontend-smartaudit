@@ -1,6 +1,9 @@
 //select.jsx
 import { useState, useEffect } from "react";
 import { fetchSearchData } from "../../services/Api/Get/GetDashboard";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from 'dayjs';
 import {
   Grid,
   Box,
@@ -19,6 +22,10 @@ export default function SelectMaster({ onSearch }) {
   const [searchdata, setSearchdata] = useState([]);
   const [searchdata1, setSearchdata1] = useState([]);
   const [searchdata2, setSearchdata2] = useState([]);
+  const defaultStartDate = dayjs().subtract(1, 'month').startOf('month');
+  const [startDate, setStartDate] = useState(defaultStartDate);
+  const [endDate, setEndDate] = useState(null);
+  
 
   const handleChange = async (event) => {
     const selectedDivision = event.target.value;
@@ -54,9 +61,23 @@ export default function SelectMaster({ onSearch }) {
       division: division,
       department: department,
       sector: sector,
+      startDate: startDate ? startDate.format("YYYY-MM-DD") : null,
+      endDate: endDate ? endDate.endOf("month").format("YYYY-MM-DD") : null,
     };
     if (onSearch) {
       onSearch(searchData);
+    }
+  };
+
+  const handleDateChange = (newDate) => {
+    if (newDate) {
+      const start = newDate.startOf("month");
+      const end = newDate.endOf("month");
+      setStartDate(start);
+      setEndDate(end);
+    } else {
+      setStartDate(null);
+      setEndDate(null);
     }
   };
 
@@ -133,6 +154,20 @@ export default function SelectMaster({ onSearch }) {
                 ))}
               </Select>
             </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+          <FormControl fullWidth>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label={"เลือกเดือนและปี"}
+                views={["month", "year"]}
+                value={startDate}
+                onChange={handleDateChange}
+                allowKeyboardControl={false}
+                disableFuture 
+              />
+            </LocalizationProvider>
+          </FormControl>
           </Grid>
           <Grid
             item
