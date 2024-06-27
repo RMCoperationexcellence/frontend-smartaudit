@@ -16,7 +16,7 @@ const fetchData = async (url, params) => {
     }
 };
 
-export const fetchPlantData = (DivNo, DeptNo, SectNo) => fetchData(BASE_URL_DATA, { DivNo, DeptNo, SectNo });
+export const fetchPlantData = (DivNo, DeptNo, SectNo, StartDate, EndDate) => fetchData(BASE_URL_DATA, { DivNo, DeptNo, SectNo, StartDate, EndDate });
 export const fetchSearchData = (DivNo, DeptNo) => fetchData(BASE_URL_MASTER, { DivNo, DeptNo });
 export const fetchSummaryAllDiv = (params) => fetchData(BASE_URL_DATAALL, params);
  
