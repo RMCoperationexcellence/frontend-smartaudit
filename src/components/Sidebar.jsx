@@ -16,12 +16,21 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import DescriptionIcon from '@mui/icons-material/Description';
 import TableChartIcon from '@mui/icons-material/TableChart';
 import { ZoomInMap } from '@mui/icons-material';
-
+import HomeIcon from '@mui/icons-material/Home';
 export default function SidebarMenu({ open, toggleDrawer }) {
   const navigate = useNavigate();
   const DrawerList = (
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
+      <ListItem disablePadding>
+            <ListItemButton onClick={() => navigate('/')}>
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText primary={'หน้าหลัก'} />
+            </ListItemButton>
+          </ListItem>
+          <Divider /> 
           <ListItem disablePadding>
             <ListItemButton onClick={() => navigate('/selectPlant')}>
               <ListItemIcon>

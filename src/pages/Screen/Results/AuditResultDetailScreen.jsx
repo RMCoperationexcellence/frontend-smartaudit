@@ -35,7 +35,7 @@ const AuditResultDetailScreen = () => {
     DivManager_desc: "",
   });
 
-  const userPermissions = getPermission();
+  const userPermissions = "3";
   const userPlantVisible = getPlantVisible();
 
   useEffect(() => {

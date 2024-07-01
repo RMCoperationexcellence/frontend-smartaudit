@@ -1,0 +1,53 @@
+/* HomeScreen.css */
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.card {
+  background: rgb(240,240,240);
+  background: linear-gradient(169deg, rgba(240,240,240,1) 0%, rgba(233,233,233,1) 100%);
+  border-radius: 15px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  flex: 1 1 calc(33.333% - 40px); /* 3 cards per row */
+  padding: 20px;
+  margin: 10px;
+  box-sizing: border-box;
+  color: #00BDF2; /* Black text color */
+  height: 100px; /* Adjust height as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 230px;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  font-size: 40px; /* Adjust size as needed */
+  margin-right: 10px;
+  color: #00BDF2; /* Black icon color */
+}
+
+.card h2 {
+  margin: 0;
+  font-weight: bold; /* Make text bold */
+}
+
+@media (max-width: 768px) {
+  .card {
+    flex: 1 1 calc(50% - 40px); /* 2 cards per row on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    flex: 1 1 100%; /* 1 card per row on very small screens */
+  }
+}
