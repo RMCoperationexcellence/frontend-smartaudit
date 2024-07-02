@@ -63,7 +63,8 @@ export default function ResultsDisplay({ dataResults, latestAssessmentDate }) {
               </Typography>
               <Typography sx={{ fontSize: "23px" }}>
                 สังกัด {groupedData[plantNo][0].sector_name} /{" "}
-                {groupedData[plantNo][0].deprtmant_name}
+                {groupedData[plantNo][0].department_name}
+
               </Typography>
               <Grid
                 style={{ display: "flex", justifyContent: "space-between" }}
@@ -163,4 +164,4 @@ export default function ResultsDisplay({ dataResults, latestAssessmentDate }) {
       })}
     </div>
   );
-}
+}  

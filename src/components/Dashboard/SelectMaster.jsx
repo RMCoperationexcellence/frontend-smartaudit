@@ -1,4 +1,3 @@
-//select.jsx
 import { useState, useEffect } from "react";
 import { fetchSearchData } from "../../services/Api/Get/GetDashboard";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
@@ -24,8 +23,7 @@ export default function SelectMaster({ onSearch }) {
   const [searchdata2, setSearchdata2] = useState([]);
   const defaultStartDate = dayjs().subtract(1, 'month').startOf('month');
   const [startDate, setStartDate] = useState(defaultStartDate);
-  const [endDate, setEndDate] = useState(null);
-  
+  const [EndDate, setEndDate] = useState(null);
 
   const handleChange = async (event) => {
     const selectedDivision = event.target.value;
@@ -62,7 +60,7 @@ export default function SelectMaster({ onSearch }) {
       department: department,
       sector: sector,
       startDate: startDate ? startDate.format("YYYY-MM-DD") : null,
-      endDate: endDate ? endDate.endOf("month").format("YYYY-MM-DD") : null,
+      EndDate: EndDate ? EndDate.endOf("month").format("YYYY-MM-DD") : null,
     };
     if (onSearch) {
       onSearch(searchData);
@@ -85,9 +83,12 @@ export default function SelectMaster({ onSearch }) {
     const initializeData = async () => {
       const result = await fetchSearchData();
       setSearchdata(result);
+      // Call handleDateChange with the defaultStartDate
+      handleDateChange(defaultStartDate);
     };
     initializeData();
   }, []);
+
 
   return (
     <div>
@@ -103,7 +104,7 @@ export default function SelectMaster({ onSearch }) {
                 label="กิจการ"
               >
                 <MenuItem value="all">
-                  <em>All</em>
+                  <em>ทั้งหมด</em>
                 </MenuItem>
                 {searchdata.map((item) => (
                   <MenuItem key={item.DIVISION_NO} value={item.DIVISION_NO}>
@@ -124,7 +125,7 @@ export default function SelectMaster({ onSearch }) {
                 disabled={division === "all"}
               >
                 <MenuItem value="">
-                  <em>None</em>
+                  <em>ทั้งหมด</em>
                 </MenuItem>
                 {searchdata1.map((item) => (
                   <MenuItem key={item.DEPT_NO} value={item.DEPT_NO}>
@@ -145,7 +146,7 @@ export default function SelectMaster({ onSearch }) {
                 disabled={!department}
               >
                 <MenuItem value="">
-                  <em>None</em>
+                  <em>ทั้งหมด</em>
                 </MenuItem>
                 {searchdata2.map((item) => (
                   <MenuItem key={item.SECT_NO} value={item.SECT_NO}>
@@ -156,18 +157,18 @@ export default function SelectMaster({ onSearch }) {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-          <FormControl fullWidth>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label={"เลือกเดือนและปี"}
-                views={["month", "year"]}
-                value={startDate}
-                onChange={handleDateChange}
-                allowKeyboardControl={false}
-                disableFuture 
-              />
-            </LocalizationProvider>
-          </FormControl>
+            <FormControl fullWidth>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label={"เลือกเดือนและปี"}
+                  views={["month", "year"]}
+                  value={startDate}
+                  onChange={handleDateChange}
+                  allowKeyboardControl={false}
+                  disableFuture
+                />
+              </LocalizationProvider>
+            </FormControl>
           </Grid>
           <Grid
             item
@@ -181,9 +182,6 @@ export default function SelectMaster({ onSearch }) {
             >
               ค้นหา
             </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Divider />
           </Grid>
         </Grid>
       </Box>

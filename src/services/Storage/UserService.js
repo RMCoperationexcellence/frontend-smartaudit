@@ -11,6 +11,11 @@ const getUser = () => {
     return localStorage.getItem('user');
 }
 
+const getProfile = () => {
+    const data = localStorage.getItem('profile');
+    return data ? JSON.parse(data) : null;
+}   
+
 const getEmpId = () => {
     const userStr = localStorage.getItem('profile'); // ดึงข้อมูลออกมาเป็น string    
     // ตรวจสอบว่า userStr มีค่าและทำการแปลงเป็น object ด้วย JSON.parse
@@ -53,4 +58,4 @@ const getPlantVisible = () => {
     return null;
     
 }
-export { storeUser, getUser, getEmpId, getPermission, getPlantVisible }
+export { storeUser, getUser, getEmpId, getPermission, getPlantVisible, getProfile }

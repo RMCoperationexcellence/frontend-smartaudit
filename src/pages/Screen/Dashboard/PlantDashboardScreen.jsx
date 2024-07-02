@@ -1,99 +1,175 @@
+import React, { useState, useEffect } from 'react';
 import ResultsDisplay from "../../../components/Dashboard/ResultsDisplay";
 import SelectMaster from "../../../components/Dashboard/SelectMaster";
 import SummaryTable from "../../../components/Dashboard/SummaryTable";
-import { fetchPlantData, fetchSummaryAllDiv } from "../../../services/Api/Get/GetDashboard";
-import { useEffect, useState } from "react";
-import { CircularProgress } from "@mui/material";
+import { fetchPlantData, fetchSummaryAllDiv, fetchSummaryplant } from "../../../services/Api/Get/GetDashboard";
+import { CircularProgress, Grid, ToggleButtonGroup, ToggleButton, Popover, Typography } from "@mui/material";
 import MainLayout from './../../../layouts/MainLayout';
-
+import SummaryPlanTable from '../../../components/Dashboard/SummaryPlanTable';
 function PlantDashboardScreen() {
   const [summaryData, setSummaryData] = useState(null);
   const [plantData, setPlantData] = useState(null);
   const [latestAssessmentDate, setLatestAssessmentDate] = useState("");
+  const [summaryPlantData, setSummaryPlantData] = useState(null); // New state for summary plant data
   const [searchData, setSearchData] = useState({
-    division: 'all', // Default value for division
-    department: '', // Default value for department
-    sector: '', // Default value for sector
+    division: 'all',
+    department: '',
+    sector: '',
   });
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
+  const [allResults, setAllResults] = useState('summary');
+  const [popoverAnchor, setPopoverAnchor] = useState(null);
+
+  const handleChangeAllResult = (event, newAlignment) => {
+    if (newAlignment === 'factoryReport' && !(searchData.department || searchData.sector)) {
+      setPopoverAnchor(event.currentTarget);
+      return;
+    }
+    if (newAlignment !== null) {
+      setAllResults(newAlignment);
+    }
+  };
+
+  const handlePopoverClose = () => {
+    setPopoverAnchor(null);
+  };
 
   useEffect(() => {
-    setLoading(true); // Start loading
-    // Fetch summary data when component mounts
+    setLoading(true);
     fetchSummaryAllDiv()
       .then((data) => {
         setSummaryData(data);
-        setLoading(false); // Stop loading
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching summary data:", error);
-        setLoading(false); // Stop loading on error
+        setLoading(false);
       });
   }, []);
 
   const handleSearch = async (searchData) => {
-    setSearchData(searchData); // Update searchData state with new values
-
-    setLoading(true); // Start loading
+    setSearchData(searchData);
+    setLoading(true);
 
     if (searchData.division === 'all') {
-      // Fetch all summary data
       fetchSummaryAllDiv()
         .then((data) => {
           setSummaryData(data);
-          setPlantData(null); // Clear plant data
-          setLatestAssessmentDate(""); // Reset assessment date
-          setLoading(false); // Stop loading
+          setPlantData(null);
+          setLatestAssessmentDate("");
+          setSummaryPlantData(null); // Clear summary plant data when fetching all division summary
+          setLoading(false);
         })
         .catch((error) => {
           console.error("Error fetching summary data:", error);
           setSummaryData(null);
-          setLoading(false); // Stop loading on error
+          setLoading(false);
         });
     } else {
-      // Fetch plant-specific data based on search criteria
-      fetchPlantData(searchData.division, searchData.department, searchData.sector, searchData.startDate, searchData.endDate)
-        .then((data) => {
-          if (data.length > 0) {
-            setPlantData(data);
-            setLatestAssessmentDate(data[0].AssessmentDate); // Assuming AssessmentDate is a property of plant data
-            console.log("Plant Data", data);
-          } else {
-            setPlantData(null); // Clear plant data if no results
-            setLatestAssessmentDate(""); // Reset assessment date if no results
-          }
-          setSummaryData(null); // Clear summary data
-          setLoading(false); // Stop loading
-        })
-        .catch((error) => {
-          console.error("Error fetching plant data:", error);
+      try {
+        const plantData = await fetchPlantData(searchData.division, searchData.department, searchData.sector, searchData.startDate, searchData.EndDate);
+        const summaryPlantData = await fetchSummaryplant(searchData.division, searchData.department, searchData.sector, searchData.startDate, searchData.EndDate);
+
+        if (plantData.length > 0) {
+          setPlantData(plantData);
+          setLatestAssessmentDate(plantData[0].AssessmentDate);
+        } else {
           setPlantData(null);
           setLatestAssessmentDate("");
-          setSummaryData(null); // Clear summary data on error
-          setLoading(false); // Stop loading on error
-        });
+        }
+
+        setSummaryPlantData(summaryPlantData);
+        setSummaryData(null);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setPlantData(null);
+        setLatestAssessmentDate("");
+        setSummaryData(null);
+        setSummaryPlantData(null);
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
   return (
     <MainLayout>
-    <div>
-      <SelectMaster onSearch={handleSearch} />
-      {loading && (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-          <CircularProgress />
-        </div>
-      )}
-      {!loading && summaryData && <SummaryTable division="all" dataAllResults={summaryData} />}
-      {!loading && plantData && (
-        <ResultsDisplay
-          dataResults={plantData}
-          latestAssessmentDate={latestAssessmentDate}
-        />
-      )}
-    </div>
+      <div>
+        <SelectMaster onSearch={handleSearch} />
+        {loading && (
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <CircularProgress />
+          </div>
+        )}
+
+        {!loading && (
+          <Grid item xs={12} style={{ display: "flex", justifyContent: "center", marginBottom: "16px" }}>
+            {(searchData.division && searchData.department && searchData.sector) ? (
+              <ToggleButtonGroup
+                color="primary"
+                value={allResults}
+                exclusive
+                onChange={handleChangeAllResult}
+                aria-label="Platform"
+              >
+                <ToggleButton value="summary">สรุปผล</ToggleButton>
+                <ToggleButton value="factoryReport">รายโรงงาน</ToggleButton>
+              </ToggleButtonGroup>
+            ) : (searchData.division && searchData.department) ? (
+              <ToggleButtonGroup
+                color="primary"
+                value={allResults}
+                exclusive
+                onChange={handleChangeAllResult}
+                aria-label="Platform"
+              >
+                <ToggleButton value="summary">สรุปผล</ToggleButton>
+                <ToggleButton value="factoryReport">รายโรงงาน</ToggleButton>
+                {/* Add any additional buttons as needed */}
+              </ToggleButtonGroup>
+            ) : searchData.division ? (
+              // Only division is selected
+              null // Don't render any ToggleButtonGroup
+            ) : (
+              // None selected, render default UI or nothing
+              null
+            )}
+            <Popover
+              open={Boolean(popoverAnchor)}
+              anchorEl={popoverAnchor}
+              onClose={handlePopoverClose}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+            >
+              <Typography sx={{ p: 2, color: 'red' }}>กรุณาเลือก กิจการ และ ภาค</Typography>
+            </Popover>
+          </Grid>
+        )}
+
+
+        {!loading && summaryData && allResults === 'summary' && searchData.division === 'all' && (
+          <SummaryTable division="all" dataAllResults={summaryData} />
+        )}
+
+        {!loading && plantData && allResults === 'factoryReport' && (
+          <ResultsDisplay
+            dataResults={plantData}
+            latestAssessmentDate={latestAssessmentDate}
+          />
+        )}
+
+        {!loading && plantData && allResults === 'summary' && (
+          <SummaryPlanTable dataResults={plantData} summaryPlantData={summaryPlantData} />
+        )}
+      </div>
     </MainLayout>
   );
 }
 
-export default PlantDashboardScreen
+export default PlantDashboardScreen;
